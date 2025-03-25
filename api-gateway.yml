@@ -1,1 +1,23 @@
 
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: user-service
+          uri: lb://ms-user
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - RewritePath=/api/users/(?<segment>.*), /$\{segment}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
