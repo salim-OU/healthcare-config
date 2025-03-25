@@ -11,12 +11,4 @@ spring:
       ddl-auto: update
     show-sql: true
 
-healthcare:
-  app:
-    jwtSecret: yourVerySecureJwtSecretKeyShouldBeLongAndHardToGuess
-    jwtExpirationMs: 86400000  # 24 heures
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
