@@ -1,1 +1,29 @@
+server:
+  port: 8082
 
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: healthcare_notes
+      authentication-database: admin
+      # Décommentez les lignes suivantes si votre MongoDB nécessite une authentification
+      # username: mongodb
+      # password: mongodb
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+  instance:
+    preferIpAddress: true
