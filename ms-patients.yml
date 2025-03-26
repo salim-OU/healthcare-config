@@ -10,7 +10,7 @@ spring:
     password: motdepasse123*
   jpa:
     hibernate:
-      ddl-auto: update
+       ddl-auto: create-drop
     show-sql: true
 
 healthcare:
