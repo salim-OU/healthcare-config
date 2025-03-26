@@ -1,5 +1,7 @@
 server:
   port: 8082
+  servlet:
+    context-path: /api
 
 spring:
   datasource:
@@ -20,3 +22,4 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
+
