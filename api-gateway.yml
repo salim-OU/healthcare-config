@@ -1,10 +1,3 @@
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
-
-      server:
-  port: 8080
 spring:
   application:
     name: api-gateway
@@ -12,55 +5,55 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
-          lower-case-service-id: true
+          enabled: true  # Active la découverte des services sur Eureka
+          lower-case-service-id: true  # Utilisation des ID de service en minuscule
       routes:
         - id: user-service
-          uri: lb://ms-user
+          uri: lb://ms-user  # Load Balancer pour le service user
           predicates:
             - Path=/api/users/**
           filters:
             - RewritePath=/api/users/(?<segment>.*), /$\{segment}
             
         - id: patient-service
-          uri: lb://ms-patient
+          uri: lb://ms-patient  # Load Balancer pour le service patient
           predicates:
             - Path=/api/patients/**
           filters:
             - RewritePath=/api/patients/(?<segment>.*), /$\{segment}
             
         - id: notes-service
-          uri: lb://ms-notes
+          uri: lb://ms-notes  # Load Balancer pour le service notes
           predicates:
             - Path=/api/notes/**
           filters:
             - RewritePath=/api/notes/(?<segment>.*), /$\{segment}
             
         - id: assessment-service
-          uri: lb://ms-assessment
+          uri: lb://ms-assessment  # Load Balancer pour le service assessment
           predicates:
             - Path=/api/assessments/**
           filters:
             - RewritePath=/api/assessments/(?<segment>.*), /$\{segment}
             
         - id: webapp-service
-          uri: lb://ms-webapp
+          uri: lb://ms-webapp  # Load Balancer pour le service webapp
           predicates:
             - Path=/api/webapp/**
           filters:
             - RewritePath=/api/webapp/(?<segment>.*), /$\{segment}
-            
+
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
-    registerWithEureka: true
-    fetchRegistry: true
+      defaultZone: http://localhost:8070/eureka/  # URL du service Eureka
+    registerWithEureka: true  # Inscrire le service Gateway sur Eureka
+    fetchRegistry: true  # Récupérer le registre des services d'Eureka
   instance:
-    preferIpAddress: true
+    preferIpAddress: true  # Utiliser l'IP de l'instance dans les enregistrements
 
-# Configuration de journalisation (optionnelle)
+# Configuration de journalisation pour déboguer
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty: INFO
+    org.springframework.cloud.gateway: DEBUG  # Logs détaillés pour le Gateway
+    reactor.netty: INFO  # Logs sur les requêtes réactives
