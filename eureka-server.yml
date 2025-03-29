@@ -1,11 +1,16 @@
+
+
+
 server:
   port: 8070
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: localhost  # Utiliser localhost ou l'adresse IP de la machine si nécessaire
   client:
-    fetchRegistry: false
-    registerWithEureka: false
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    fetchRegistry: false  # Le serveur Eureka ne récupère pas de registre d'autres serveurs
+    registerWithEureka: false  # Le serveur Eureka ne doit pas s'enregistrer dans un autre registre
+  server:
+    # Si tu veux personnaliser les URL d'Eureka :
+    # contextPath: /eureka
+    # Tu peux aussi ajuster d'autres options comme la gestion de la sécurité
