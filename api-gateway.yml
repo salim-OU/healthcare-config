@@ -1,8 +1,13 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
 
-server:
+      server:
   port: 8080
-
 spring:
+  application:
+    name: api-gateway
   cloud:
     gateway:
       discovery:
@@ -16,8 +21,46 @@ spring:
             - Path=/api/users/**
           filters:
             - RewritePath=/api/users/(?<segment>.*), /$\{segment}
-
+            
+        - id: patient-service
+          uri: lb://ms-patient
+          predicates:
+            - Path=/api/patients/**
+          filters:
+            - RewritePath=/api/patients/(?<segment>.*), /$\{segment}
+            
+        - id: notes-service
+          uri: lb://ms-notes
+          predicates:
+            - Path=/api/notes/**
+          filters:
+            - RewritePath=/api/notes/(?<segment>.*), /$\{segment}
+            
+        - id: assessment-service
+          uri: lb://ms-assessment
+          predicates:
+            - Path=/api/assessments/**
+          filters:
+            - RewritePath=/api/assessments/(?<segment>.*), /$\{segment}
+            
+        - id: webapp-service
+          uri: lb://ms-webapp
+          predicates:
+            - Path=/api/webapp/**
+          filters:
+            - RewritePath=/api/webapp/(?<segment>.*), /$\{segment}
+            
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    preferIpAddress: true
+
+# Configuration de journalisation (optionnelle)
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: INFO
