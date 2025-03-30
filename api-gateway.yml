@@ -1,43 +1,46 @@
+server:
+  port: 8080  # Port du Gateway
+
 spring:
   application:
-    name: api-gateway
+    name: api-gateway  # Nom de l'application
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true  # Active la découverte des services sur Eureka
-          lower-case-service-id: true  # Utilisation des ID de service en minuscule
-      routes:
-        - id: user-service
-          uri: lb://ms-user  # Load Balancer pour le service user
-          predicates:
-            - Path=/api/users/**
-          filters:
-            - RewritePath=/api/users/(?<segment>.*), /$\{segment}
-            
+          lower-case-service-id: true  # Utilisation d'ID de service en minuscule
+      routes:  # Configuration des routes pour rediriger les requêtes vers les services
+        - id: user-service  # Identifiant unique de la route
+          uri: lb://ms-user  # URI avec Load Balancer pour le service 'ms-user'
+          predicates:  # Conditions sous lesquelles cette route sera utilisée
+            - Path=/api/users/**  # Correspondance des requêtes commençant par /api/users/
+          filters:  # Filtres appliqués aux requêtes et réponses
+            - RewritePath=/api/users/(?<segment>.*), /$\{segment}  # Réécriture du chemin
+        
         - id: patient-service
-          uri: lb://ms-patient  # Load Balancer pour le service patient
+          uri: lb://ms-patient  # Load Balancer pour le service 'ms-patient'
           predicates:
             - Path=/api/patients/**
           filters:
             - RewritePath=/api/patients/(?<segment>.*), /$\{segment}
-            
+
         - id: notes-service
-          uri: lb://ms-notes  # Load Balancer pour le service notes
+          uri: lb://ms-notes  # Load Balancer pour le service 'ms-notes'
           predicates:
             - Path=/api/notes/**
           filters:
             - RewritePath=/api/notes/(?<segment>.*), /$\{segment}
-            
+        
         - id: assessment-service
-          uri: lb://ms-assessment  # Load Balancer pour le service assessment
+          uri: lb://ms-assessment  # Load Balancer pour le service 'ms-assessment'
           predicates:
             - Path=/api/assessments/**
           filters:
             - RewritePath=/api/assessments/(?<segment>.*), /$\{segment}
-            
+
         - id: webapp-service
-          uri: lb://ms-webapp  # Load Balancer pour le service webapp
+          uri: lb://ms-webapp  # Load Balancer pour le service 'ms-webapp'
           predicates:
             - Path=/api/webapp/**
           filters:
@@ -47,13 +50,13 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/  # URL du service Eureka
-    registerWithEureka: true  # Inscrire le service Gateway sur Eureka
-    fetchRegistry: true  # Récupérer le registre des services d'Eureka
+    registerWithEureka: true  # Enregistre le Gateway dans Eureka
+    fetchRegistry: true  # Récupère le registre des services d'Eureka
   instance:
-    preferIpAddress: true  # Utiliser l'IP de l'instance dans les enregistrements
+    preferIpAddress: true  # Utilise l'adresse IP de l'instance dans les enregistrements
 
-# Configuration de journalisation pour déboguer
+# Configuration de journalisation pour le débogage
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG  # Logs détaillés pour le Gateway
-    reactor.netty: INFO  # Logs sur les requêtes réactives
+    org.springframework.cloud.gateway: DEBUG  # Logs détaillés pour les routes Gateway
+    reactor.netty: INFO  # Logs pour la gestion des connexions réseau réactives
