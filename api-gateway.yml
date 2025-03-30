@@ -1,8 +1,17 @@
+server:
+  port: 8080
+
 spring:
+  application:
+    name: api-gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
-        # Routes existantes pour MS-User
+        # Route pour MS-User
         - id: user-service
           uri: lb://ms-user
           predicates:
@@ -11,10 +20,35 @@ spring:
             - RewritePath=/api/users/(?<segment>.*), /$\{segment}
             - RewritePath=/api/auth/(?<segment>.*), /api/auth/$\{segment}
             
-        # Route corrigée pour MS-Patients (notez le "s" à la fin)
+        # Route pour MS-Patients (sans réécriture de chemin)
         - id: patient-service
           uri: lb://ms-patients
           predicates:
             - Path=/api/patients/**
-          filters:
-            - RewritePath=/api/patients(?<segment>.*), /patients$\{segment}
+      
+      # Configuration CORS globale
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            maxAge: 3600
+
+# Configuration Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+  instance:
+    preferIpAddress: true
+
+# Configuration de monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
