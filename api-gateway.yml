@@ -11,10 +11,10 @@ spring:
             - RewritePath=/api/users/(?<segment>.*), /$\{segment}
             - RewritePath=/api/auth/(?<segment>.*), /api/auth/$\{segment}
             
-        # Nouvelle route pour MS-Patient
+        # Route corrigée pour MS-Patient
         - id: patient-service
           uri: lb://ms-patient
           predicates:
             - Path=/api/patients/**
           filters:
-            - RewritePath=/api/patients/(?<segment>.*), /patients/$\{segment}
+            - RewritePath=/api/patients(?<segment>.*), /patients$\{segment}
