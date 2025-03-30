@@ -2,7 +2,7 @@ spring:
   cloud:
     gateway:
       routes:
-        # Routes existantes
+        # Routes existantes pour MS-User
         - id: user-service
           uri: lb://ms-user
           predicates:
@@ -11,7 +11,7 @@ spring:
             - RewritePath=/api/users/(?<segment>.*), /$\{segment}
             - RewritePath=/api/auth/(?<segment>.*), /api/auth/$\{segment}
             
-        # Route corrigée pour MS-Patients (pluriel)
+        # Route corrigée pour MS-Patients (notez le "s" à la fin)
         - id: patient-service
           uri: lb://ms-patients
           predicates:
