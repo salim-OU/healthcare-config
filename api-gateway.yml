@@ -1,13 +1,8 @@
-server:
-  port: 8080
 spring:
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
       routes:
+        # Routes existantes
         - id: user-service
           uri: lb://ms-user
           predicates:
@@ -15,3 +10,11 @@ spring:
           filters:
             - RewritePath=/api/users/(?<segment>.*), /$\{segment}
             - RewritePath=/api/auth/(?<segment>.*), /api/auth/$\{segment}
+            
+        # Nouvelle route pour MS-Patient
+        - id: patient-service
+          uri: lb://ms-patient
+          predicates:
+            - Path=/api/patients/**
+          filters:
+            - RewritePath=/api/patients/(?<segment>.*), /patients/$\{segment}
