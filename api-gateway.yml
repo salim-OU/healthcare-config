@@ -25,6 +25,12 @@ spring:
           uri: lb://ms-patients
           predicates:
             - Path=/api/patients/**
+            
+        # Route pour MS-Notes
+        - id: notes-service
+          uri: lb://ms-notes
+          predicates:
+            - Path=/api/notes/**
       
       # Configuration CORS globale
       globalcors:
