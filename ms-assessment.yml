@@ -1,19 +1,22 @@
+server:
+  port: 8084
+
 spring:
   application:
     name: ms-assessment
-  config:
-    import: "optional:configserver:http://localhost:9000"
   datasource:
     url: jdbc:mysql://localhost:3306/healthcare_assessment?createDatabaseIfNotExist=true
     username: root
     password: motdepasse123*
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-server:
-  port: 8084
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
 
 eureka:
   client:
@@ -22,15 +25,8 @@ eureka:
   instance:
     preferIpAddress: true
 
-feign:
-  circuitbreaker:
-    enabled: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics
-  endpoint:
-    health:
-      show-details: always
+logging:
+  level:
+    org.springframework.web: INFO
+    org.hibernate: ERROR
+    net.healthcare: DEBUG
