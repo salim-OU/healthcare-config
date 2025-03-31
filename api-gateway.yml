@@ -1,6 +1,5 @@
 server:
   port: 8080
-
 spring:
   application:
     name: api-gateway
@@ -17,33 +16,27 @@ spring:
           predicates:
             - Path=/api/users/**, /api/auth/**
           filters:
-            - RewritePath=/api/users/(?<segment>.*), /${segment}
-            - RewritePath=/api/auth/(?<segment>.*), /api/auth/${segment}
-
+            - RewritePath=/api/users/(?<segment>.*), /$\{segment}
+            - RewritePath=/api/auth/(?<segment>.*), /api/auth/$\{segment}
+        
         # Route pour MS-Patients
         - id: patient-service
           uri: lb://ms-patients
           predicates:
             - Path=/api/patients/**
-
+        
         # Route pour MS-Notes
         - id: notes-service
           uri: lb://ms-notes
           predicates:
             - Path=/api/notes/**
-
+        
         # Route pour MS-Assessment
         - id: assessment-service
           uri: lb://ms-assessment
           predicates:
             - Path=/api/assessments/**
-
-        # Route spécifique pour GraphQL
-        - id: assessment-graphql
-          uri: lb://ms-assessment
-          predicates:
-            - Path=/graphql
-
+      
       # Configuration CORS globale
       globalcors:
         corsConfigurations:
@@ -66,7 +59,22 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "health,info,metrics,gateway"
   endpoint:
     health:
       show-details: ALWAYS
+
+# Configuration de résilience
+resilience4j:
+  circuitbreaker:
+    instances:
+      defaultCB:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+  timelimiter:
+    instances:
+      defaultTL:
+        timeoutDuration: 5s
