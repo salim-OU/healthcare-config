@@ -31,6 +31,11 @@ spring:
           uri: lb://ms-notes
           predicates:
             - Path=/api/notes/**
+             # Route pour MS-Assessment (Nouvelle route ajoutée)
+    - id: assessment-service
+      uri: lb://ms-assessment
+      predicates:
+        - Path=/api/assessments/**
       
       # Configuration CORS globale
       globalcors:
