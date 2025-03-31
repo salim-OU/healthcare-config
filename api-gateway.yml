@@ -1,6 +1,5 @@
 server:
   port: 8080
-
 spring:
   application:
     name: api-gateway
@@ -31,11 +30,6 @@ spring:
           uri: lb://ms-notes
           predicates:
             - Path=/api/notes/**
-             # Route pour MS-Assessment (Nouvelle route ajoutée)
-    - id: assessment-service
-      uri: lb://ms-assessment
-      predicates:
-        - Path=/api/assessments/**
       
       # Configuration CORS globale
       globalcors:
@@ -45,7 +39,6 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
             maxAge: 3600
-
 # Configuration Eureka
 eureka:
   client:
@@ -53,7 +46,6 @@ eureka:
       defaultZone: http://localhost:8070/eureka/
   instance:
     preferIpAddress: true
-
 # Configuration de monitoring
 management:
   endpoints:
@@ -63,3 +55,4 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+ajoue ms
