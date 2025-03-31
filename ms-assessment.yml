@@ -1,23 +1,50 @@
-# ms-assessment.yml
+
 server:
   port: 8084
+  servlet:
+    context-path: /
 
+# Spring Configuration
 spring:
+  # Application Name
+  application:
+    name: ms-assessment
+
+  # Database Configuration
   datasource:
     url: jdbc:mysql://localhost:3306/healthcare_assessment?createDatabaseIfNotExist=true
     username: root
     password: motdepasse123*
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA Configuration
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  # GraphQL Configuration
   graphql:
     graphiql:
       enabled: true
+      path: /graphiql
     schema:
+      locations: classpath:graphql/**
       printer:
         enabled: true
 
+  # Logging Configuration
+  logging:
+    level:
+      org.springframework.web: INFO
+      org.hibernate: ERROR
+      net.healthcare: DEBUG
+
+# Feign Client Configuration
 feign:
   circuitbreaker:
     enabled: true
@@ -28,6 +55,7 @@ feign:
         readTimeout: 5000
         loggerLevel: basic
 
+# Resilience4j Circuit Breaker Configuration
 resilience4j:
   circuitbreaker:
     instances:
@@ -44,18 +72,35 @@ resilience4j:
         waitDurationInOpenState: 10000
         permittedNumberOfCallsInHalfOpenState: 3
 
+# Eureka Service Discovery Configuration
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
   instance:
     preferIpAddress: true
+    instanceId: ${spring.application.name}:${random.value}
 
+# Actuator Endpoints Configuration
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: 
+          - health
+          - info
+          - metrics
+          - prometheus
   endpoint:
     health:
       show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+
+# Custom Application Properties
+app:
+  assessment:
+    default-risk-threshold: 0.5
+    max-assessments-per-patient: 10
