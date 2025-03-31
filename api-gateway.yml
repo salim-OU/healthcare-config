@@ -16,8 +16,8 @@ spring:
           predicates:
             - Path=/api/users/**, /api/auth/**
           filters:
-            - RewritePath=/api/users/(?<segment>.*), /$\{segment}
-            - RewritePath=/api/auth/(?<segment>.*), /api/auth/$\{segment}
+            - RewritePath=/api/users/(?<segment>.*), /${segment}
+            - RewritePath=/api/auth/(?<segment>.*), /api/auth/${segment}
             
         # Route pour MS-Patients (sans réécriture de chemin)
         - id: patient-service
@@ -30,6 +30,12 @@ spring:
           uri: lb://ms-notes
           predicates:
             - Path=/api/notes/**
+            
+        # Route pour MS-Assessment (Nouvelle route ajoutée)
+        - id: assessment-service
+          uri: lb://ms-assessment
+          predicates:
+            - Path=/api/assessments/**
       
       # Configuration CORS globale
       globalcors:
