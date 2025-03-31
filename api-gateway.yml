@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     name: api-gateway
@@ -18,26 +19,31 @@ spring:
           filters:
             - RewritePath=/api/users/(?<segment>.*), /${segment}
             - RewritePath=/api/auth/(?<segment>.*), /api/auth/${segment}
-            
-        # Route pour MS-Patients (sans réécriture de chemin)
+
+        # Route pour MS-Patients
         - id: patient-service
           uri: lb://ms-patients
           predicates:
             - Path=/api/patients/**
-            
+
         # Route pour MS-Notes
         - id: notes-service
           uri: lb://ms-notes
           predicates:
             - Path=/api/notes/**
-            
-        # Route pour MS-Assessment (Nouvelle route ajoutée)
+
+        # Route pour MS-Assessment
         - id: assessment-service
           uri: lb://ms-assessment
           predicates:
             - Path=/api/assessments/**
+
+        # Route spécifique pour GraphQL
+        - id: assessment-graphql
+          uri: lb://ms-assessment
+          predicates:
             - Path=/graphql
-      
+
       # Configuration CORS globale
       globalcors:
         corsConfigurations:
@@ -46,6 +52,7 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
             maxAge: 3600
+
 # Configuration Eureka
 eureka:
   client:
@@ -53,6 +60,7 @@ eureka:
       defaultZone: http://localhost:8070/eureka/
   instance:
     preferIpAddress: true
+
 # Configuration de monitoring
 management:
   endpoints:
