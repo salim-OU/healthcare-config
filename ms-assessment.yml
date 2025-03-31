@@ -1,8 +1,8 @@
-# ms-assessment.yml
-server:
-  port: 8084
-
 spring:
+  application:
+    name: ms-assessment
+  config:
+    import: "optional:configserver:http://localhost:9000"
   datasource:
     url: jdbc:mysql://localhost:3306/healthcare_assessment?createDatabaseIfNotExist=true
     username: root
@@ -10,36 +10,16 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
+  graphql:
+    graphiql:
+      enabled: true
+    schema:
+      printer:
+        enabled: true
 
-feign:
-  circuitbreaker:
-    enabled: true
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-
-resilience4j:
-  circuitbreaker:
-    instances:
-      patientService:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10000
-        permittedNumberOfCallsInHalfOpenState: 3
-      noteService:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10000
-        permittedNumberOfCallsInHalfOpenState: 3
+server:
+  port: 8084
 
 eureka:
   client:
@@ -48,11 +28,15 @@ eureka:
   instance:
     preferIpAddress: true
 
+feign:
+  circuitbreaker:
+    enabled: true
+
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health,info,metrics,graphql
   endpoint:
     health:
       show-details: always
