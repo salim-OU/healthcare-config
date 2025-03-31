@@ -37,8 +37,6 @@ spring:
           predicates:
             - Path=/api/assessments/**
             - Path=/graphql
-          filters:
-            - RewritePath=/graphql, /graphql
       
       # Configuration CORS globale
       globalcors:
