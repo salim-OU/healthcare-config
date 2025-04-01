@@ -36,6 +36,14 @@ spring:
           uri: lb://ms-assessment
           predicates:
             - Path=/api/assessments/**
+            
+        # Route pour MS-WebApp (nouveau)
+        - id: webapp-service
+          uri: lb://ms-webapp
+          predicates:
+            - Path=/api/webapp/**
+          filters:
+            - StripPrefix=1
       
       # Configuration CORS globale
       globalcors:
@@ -45,7 +53,6 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
             maxAge: 3600
-
 # Configuration Eureka
 eureka:
   client:
@@ -53,7 +60,6 @@ eureka:
       defaultZone: http://localhost:8070/eureka/
   instance:
     preferIpAddress: true
-
 # Configuration de monitoring
 management:
   endpoints:
@@ -63,7 +69,6 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-
 # Configuration de résilience
 resilience4j:
   circuitbreaker:
