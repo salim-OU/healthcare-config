@@ -1,6 +1,6 @@
 # ms-webapp.yml (sur le serveur de configuration)
 server:
-  port: 8084
+  port: 8086
   servlet:
     context-path: /api/webapp
 
