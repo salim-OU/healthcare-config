@@ -1,0 +1,100 @@
+# ms-webapp.yml (sur le serveur de configuration)
+server:
+  port: 8084
+  servlet:
+    context-path: /api/webapp
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081
+
+# Configuration JWT
+healthcare:
+  app:
+    jwtSecret: yourVerySecureJwtSecretKeyShouldBeLongAndHardToGuess
+    jwtExpirationMs: 86400000  # 24 heures
+
+# Configuration Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    preferIpAddress: true
+
+# Configuration Feign
+feign:
+  circuitbreaker:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+
+# Configuration de monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: ALWAYS
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Configuration de résilience
+resilience4j:
+  circuitbreaker:
+    instances:
+      userService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+      patientService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+      notesService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+      assessmentService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+
+# URLs des microservices
+service:
+  user:
+    url: lb://ms-user
+  patient:
+    url: lb://ms-patients
+  notes:
+    url: lb://ms-notes
+  assessment:
+    url: lb://ms-assessment
+
+# Configuration de logging
+logging:
+  level:
+    fr.healthcare.mswebapp: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.cloud.openfeign: DEBUG
