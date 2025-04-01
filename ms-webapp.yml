@@ -2,7 +2,7 @@
 server:
   port: 8086
   servlet:
-    context-path: /api/webapp
+    context-path: /webapp
 
 spring:
   security:
