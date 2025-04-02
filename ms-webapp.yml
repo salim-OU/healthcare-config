@@ -1,22 +1,18 @@
-# ms-webapp.yml (sur le serveur de configuration)
 server:
   port: 8086
   servlet:
-    context-path: /webapp
-
+    context-path: /api/webapp  # Le context-path est modifié pour être cohérent
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8081
-
 # Configuration JWT
 healthcare:
   app:
     jwtSecret: yourVerySecureJwtSecretKeyShouldBeLongAndHardToGuess
     jwtExpirationMs: 86400000  # 24 heures
-
 # Configuration Eureka
 eureka:
   client:
@@ -26,7 +22,7 @@ eureka:
     fetchRegistry: true
   instance:
     preferIpAddress: true
-
+# Le reste de la configuration reste identique
 # Configuration Feign
 feign:
   circuitbreaker:
