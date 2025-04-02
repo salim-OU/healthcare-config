@@ -37,13 +37,11 @@ spring:
           predicates:
             - Path=/api/assessments/**
             
-        # Route pour MS-WebApp (nouveau)
+        # Route pour MS-WebApp (modifié)
         - id: webapp-service
-          uri: lb://ms-webapp
+          uri: http://localhost:8086  # URL directe au lieu de lb://ms-webapp
           predicates:
             - Path=/api/webapp/**
-          filters:
-            - StripPrefix=1
       
       # Configuration CORS globale
       globalcors:
@@ -59,7 +57,8 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
   instance:
-    preferIpAddress: true
+    preferIpAddress: false  # Changé pour être cohérent
+    hostname: localhost     # Ajouté pour spécifier l'hôte
 # Configuration de monitoring
 management:
   endpoints:
