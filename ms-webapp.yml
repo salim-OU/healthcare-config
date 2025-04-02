@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /api/webapp  # Le context-path est modifié pour être cohérent
 spring:
+  application:
+    name: ms-webapp  # Assurez-vous que le nom est correct pour Eureka
   security:
     oauth2:
       resourceserver:
@@ -21,7 +23,9 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
   instance:
-    preferIpAddress: true
+    preferIpAddress: false  # Modifié à false pour utiliser hostname plutôt que l'IP
+    hostname: localhost     # Ajouté pour spécifier explicitement l'hôte
+    instanceId: ${spring.application.name}:${server.port}  # ID d'instance unique
 # Le reste de la configuration reste identique
 # Configuration Feign
 feign:
@@ -33,7 +37,6 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: full
-
 # Configuration de monitoring
 management:
   endpoints:
@@ -46,7 +49,6 @@ management:
   health:
     circuitbreakers:
       enabled: true
-
 # Configuration de résilience
 resilience4j:
   circuitbreaker:
@@ -75,7 +77,6 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 5s
         permittedNumberOfCallsInHalfOpenState: 3
-
 # URLs des microservices
 service:
   user:
@@ -86,11 +87,10 @@ service:
     url: lb://ms-notes
   assessment:
     url: lb://ms-assessment
-
 # Configuration de logging
 logging:
   level:
-    fr.healthcare.mswebapp: DEBUG
+    net.webapp: DEBUG  # Modifié pour correspondre au package réel
     org.springframework.web: INFO
     org.springframework.security: INFO
     org.springframework.cloud.openfeign: DEBUG
