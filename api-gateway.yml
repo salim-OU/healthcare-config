@@ -39,7 +39,7 @@ spring:
             
         # Route pour MS-WebApp (modifié)
         - id: webapp-service
-          uri: http://localhost:8086  # URL directe au lieu de lb://ms-webapp
+          uri: lb://ms-webapp # URL directe au lieu de lb://ms-webapp
           predicates:
             - Path=/api/webapp/**
       
