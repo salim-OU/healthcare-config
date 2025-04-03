@@ -24,7 +24,7 @@ eureka:
     fetchRegistry: true
   instance:
     preferIpAddress: false  # Modifié à false pour utiliser hostname plutôt que l'IP
-    hostname: localhost     # Ajouté pour spécifier explicitement l'hôte
+    hostname: ms-webapp    # Ajouté pour spécifier explicitement l'hôte
     instanceId: ${spring.application.name}:${server.port}  # ID d'instance unique
 # Le reste de la configuration reste identique
 # Configuration Feign
