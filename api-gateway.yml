@@ -45,14 +45,13 @@ spring:
       
       # Configuration CORS globale
 # Configuration CORS globale
-        globalcors:
-          corsConfigurations:
-            '[/**]':
-              allowedOrigins: "http://localhost:5173"  # Remplacez * par l'URL spécifique
-              allowedMethods: "GET,POST,PUT,DELETE,OPTIONS"
-              allowedHeaders: "Authorization,Content-Type"
-              allowCredentials: true
-              maxAge: 3600
+          globalcors:
+            corsConfigurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*"
+                maxAge: 3600
 # Configuration Eureka
 eureka:
   client:
